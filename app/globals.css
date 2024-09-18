@@ -4,19 +4,25 @@
 
 :root {
   --background: #ffffff;
+  --sub-background: teal;
   --foreground: #171717;
+  --accent-borders: rgb(221, 210, 210);
+  --input-background: transparent;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --accent-borders: gray;
+    --input-background: transparent;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  accent-color: var(--sub-background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
