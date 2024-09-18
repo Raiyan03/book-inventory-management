@@ -24,7 +24,7 @@ function MainPage() {
   }, []);
 
   return (
-    <div>
+    <div className=" text-gray-300 bg-teal-600">
       {/* {rows.map((row) => (
         <div key={row.isbn}>
           {row.isbn} - {row.title}
