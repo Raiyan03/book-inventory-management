@@ -21,10 +21,7 @@ export default function RootLayout({ children }) {
         className={` ${poppins_init.variable} poppins antialiased`}
       >
         <main>
-          <Navbar />
-          <div>
-            {children}
-          </div>
+          {children}
         </main>
       </body>
     </html>

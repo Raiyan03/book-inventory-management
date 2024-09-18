@@ -1,6 +1,7 @@
 "use client"
 import { sql } from "@vercel/postgres";
 import { useEffect, useState } from "react";
+import Navbar from "@/components/navbar";
 import axios from "axios";
 function MainPage() {
   // Fetch data from the database
@@ -25,6 +26,7 @@ function MainPage() {
 
   return (
     <div className=" ">
+      <Navbar />
       {/* {rows.map((row) => (
         <div key={row.isbn}>
           {row.isbn} - {row.title}
