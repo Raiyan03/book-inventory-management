@@ -23,6 +23,8 @@ const BookTable = ({ books, setBooks }) => {
         setIsExportDropdownOpen(false); // Close dropdown after export
     };
 
+
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (exportDropdownRef.current && !exportDropdownRef.current.contains(event.target)) {
@@ -52,6 +54,11 @@ const BookTable = ({ books, setBooks }) => {
         setIsEditModalOpen(true);
     };
 
+    const onSave = (updatedBook) => {
+        console.log("Book updated:", updatedBook); // Replace this with actual update
+        setBooks((prevBooks) => prevBooks.map((book) => (book.entry_id === updatedBook.entry_id ? updatedBook : book)));
+    }
+
     const openDeletePopup = (book) => {
         setSelectedBook(book);
         setIsDeletePopupOpen(true);
@@ -59,6 +66,8 @@ const BookTable = ({ books, setBooks }) => {
 
     const handleDelete = () => {
         console.log("Deleting book:", selectedBook); // Replace this with actual delete logic
+        setBooks((prevBooks) => prevBooks.filter((book) => book.entry_id !== selectedBook.entry_id));
+        filteredBooks.filter((book) => book.entry_id !== selectedBook.entry_id);
         setIsDeletePopupOpen(false);
     };
 
@@ -141,7 +150,7 @@ const BookTable = ({ books, setBooks }) => {
                 book={selectedBook}
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
-                onSave={(updatedBook) => console.log("Book updated:", updatedBook)} // Replace with actual update logic
+                onSave={onSave} // Replace with actual update logic
             />}
 
             {/* Delete Confirmation */}
