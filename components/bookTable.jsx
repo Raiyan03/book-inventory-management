@@ -69,8 +69,8 @@ const BookTable = ({ books, setBooks }) => {
                 <div className="flex gap-2 relative">
                     <input
                         type="text"
-                        placeholder="Search"
-                        className="p-2 border border-gray-300 rounded-lg w-full md:w-auto"
+                        placeholder="Filter by search"
+                        className="p-2 border border-accentborders bg-background rounded-lg w-full md:w-auto"
                         onChange={handleSearch}
                     />
                     <div className="relative" ref={exportDropdownRef}>
