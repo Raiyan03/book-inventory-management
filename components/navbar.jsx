@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BsFilterLeft } from "react-icons/bs";
 import { CiFilter } from "react-icons/ci";
 import FilterModal from "./filter";
-import AddBookModal from "./AddBookModal"; // Import the new AddBookModal component
+import AddBookModal from "./addBookModal"; // Import the new AddBookModal component
 
 const Navbar = () => {
     const [searchInput, setSearchInput] = useState('');
