@@ -104,6 +104,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                                 onChange={(e) => setStock(e.target.value)}
                                 className="w-full p-2 text-black border-2 border-gray-300 rounded-lg focus:outline-accent"
                                 placeholder="Enter stock quantity"
+                                min={0}
                             />
                         </div>
                     </div>
