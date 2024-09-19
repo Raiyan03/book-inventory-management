@@ -15,7 +15,6 @@
     --background: #0a0a0a;
     --foreground: #ededed;
     --accent-borders: gray;
-    --input-background: transparent;
   }
 }
 
@@ -34,4 +33,9 @@ body {
 
 .poppins {
   font-family: var(--font-poppins);
+}
+
+.custom-scrollbar {
+  /* Firefox */
+  scrollbar-width: thin;
 }

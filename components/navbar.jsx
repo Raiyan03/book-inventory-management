@@ -12,6 +12,7 @@ const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedGenre, setSelectedGenre] = useState([]);
     const [authorFilter, setAuthorFilter] = useState([]);
+    const [authorName, setAuthorName] = useState("");
     const onChangeSearchInput = (e) => {
         setSearchInput(e.target.value);
     };
@@ -32,7 +33,17 @@ const Navbar = () => {
     };
 
     const handleAuthorChange = (e) => {
-        setAuthorFilter(e.target.value);
+        if (authorFilter.includes(e.target.value)){
+            return;
+        };
+        setAuthorFilter([...authorFilter, e.target.value]);
+    };
+
+    const removeAuthor = (authorToRemove) => {
+        setAuthorFilter( authorFilter.filter((author) => author !== authorToRemove ) );
+    };
+    const handleAuthor = (e) => {
+        setAuthorName(e.target.value);
     };
 
     const applyFilters = () => {
@@ -56,7 +67,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex gap-5 h-full">
-                <div className="h-1/2 gap-2 self-center rounded-xl border bg-gray-50 border-accentborders p-2 flex justify-center items-center">
+                <div className="h-1/2 gap-2 bg-background self-center rounded-xl border border-accentborders p-2 flex justify-center items-center">
                     <MdSearch size={25} />
                     <input onChange={onChangeSearchInput} type="text" placeholder="Search any book" className="bg-inputbg w-full focus:outline-none" />
                     <button onClick={toggleModal} className="flex items-center">
@@ -79,6 +90,9 @@ const Navbar = () => {
                 authorFilter={authorFilter}
                 handleAuthorChange={handleAuthorChange}
                 removeGenre={removeItemFromGenre}
+                handleAuthor ={handleAuthor}
+                authorName = {authorName}
+                removeAuthor = {removeAuthor}
             />
         </div>
     );
