@@ -5,16 +5,19 @@ import { CiSquarePlus } from "react-icons/ci";
 import { useState } from "react";
 import { BsFilterLeft } from "react-icons/bs";
 import { CiFilter } from "react-icons/ci";
-import FilterModal from "./filter";  // Import the FilterModal component
+import FilterModal from "./filter";
 
 const Navbar = () => {
     const [searchInput, setSearchInput] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedGenre, setSelectedGenre] = useState('');
-    const [authorFilter, setAuthorFilter] = useState('');
-
+    const [selectedGenre, setSelectedGenre] = useState([]);
+    const [authorFilter, setAuthorFilter] = useState([]);
     const onChangeSearchInput = (e) => {
         setSearchInput(e.target.value);
+    };
+
+    const removeItemFromGenre = (genreToRemove) => {
+        setSelectedGenre( selectedGenre.filter( genre => genre !== genreToRemove ) );
     };
 
     const toggleModal = () => {
@@ -22,7 +25,10 @@ const Navbar = () => {
     };
 
     const handleGenreChange = (e) => {
-        setSelectedGenre(e.target.value);
+        if (selectedGenre.includes(e.target.value)){
+            return;
+        };
+        setSelectedGenre([...selectedGenre, e.target.value]);
     };
 
     const handleAuthorChange = (e) => {
@@ -30,10 +36,9 @@ const Navbar = () => {
     };
 
     const applyFilters = () => {
-        // Logic to apply the selected filters can go here.
         console.log('Selected Genre:', selectedGenre);
         console.log('Author Filter:', authorFilter);
-        toggleModal(); // Close the modal after applying the filters
+        toggleModal();
     };
 
     return (
@@ -73,6 +78,7 @@ const Navbar = () => {
                 handleGenreChange={handleGenreChange}
                 authorFilter={authorFilter}
                 handleAuthorChange={handleAuthorChange}
+                removeGenre={removeItemFromGenre}
             />
         </div>
     );

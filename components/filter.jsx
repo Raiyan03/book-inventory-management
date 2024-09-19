@@ -1,5 +1,5 @@
 import { AiOutlineClose } from "react-icons/ai";
-
+import FilterCards from "./filterCards";
 /**
  * @component FilterModal
  * @description This functional component represents a modal for filtering books by genre and author.
@@ -21,7 +21,8 @@ const FilterModal = ({
     selectedGenre,
     handleGenreChange,
     authorFilter,
-    handleAuthorChange
+    handleAuthorChange,
+    removeGenre
 }) => {
     if (!isOpen) return null; // If the modal is not open, do not render anything
 
@@ -48,6 +49,11 @@ const FilterModal = ({
                         <option value="mystery">Mystery</option>
                         {/* Add more genres as needed */}
                     </select>
+                    <div className=" flex flex-wrap gap-1 py-1">
+                        { selectedGenre.map((genre, index)=>(
+                            <FilterCards key={index} name={genre} remove={removeGenre}/>
+                        ))}
+                    </div>
                 </div>
                 <div className="mt-4">
                     <label className="block mb-2 text-sm font-medium">Filter by Author</label>
