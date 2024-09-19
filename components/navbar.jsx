@@ -114,6 +114,7 @@ const Navbar = ({ setBooks }) => {
             <FilterModal
                 isOpen={isModalOpen}
                 onClose={toggleModal}
+                clearFilters={onClose}
                 onApplyFilters={applyFilters}
                 selectedGenre={selectedGenre}
                 handleGenreChange={handleGenreChange}
