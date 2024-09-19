@@ -28,7 +28,7 @@ function MainPage() {
   return (
     <div className=" ">
       <Navbar />
-      <BookTable books={data} />
+      <BookTable books={data} setBooks={setData} />
     </div>
   );
 }

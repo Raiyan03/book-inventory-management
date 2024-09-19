@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FiEdit2, FiMoreHorizontal } from "react-icons/fi";
-import { CiExport } from "react-icons/ci";
+import { FiEdit2 } from "react-icons/fi";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 import Export from "./export";
 import { downLoadFile } from "@/lib/utils";
+import EditModal from "./EditModal";
+import DeleteConfirmation from "./DeleteConfirmation";
 
-const BookTable = ({ books }) => {
+const BookTable = ({ books, setBooks }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [isExportDropdownOpen, setIsExportDropdownOpen] = useState(false);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
     const exportDropdownRef = useRef(null); // Reference for the dropdown
 
     const handleSearch = (e) => {
@@ -18,7 +23,6 @@ const BookTable = ({ books }) => {
         setIsExportDropdownOpen(false); // Close dropdown after export
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (exportDropdownRef.current && !exportDropdownRef.current.contains(event.target)) {
@@ -43,6 +47,21 @@ const BookTable = ({ books }) => {
         book.genre.toLowerCase().includes(searchTerm)
     );
 
+    const openEditModal = (book) => {
+        setSelectedBook(book);
+        setIsEditModalOpen(true);
+    };
+
+    const openDeletePopup = (book) => {
+        setSelectedBook(book);
+        setIsDeletePopupOpen(true);
+    };
+
+    const handleDelete = () => {
+        console.log("Deleting book:", selectedBook); // Replace this with actual delete logic
+        setIsDeletePopupOpen(false);
+    };
+
     return (
         <div className="p-4 bg-background">
             <div className="flex flex-col md:flex-row justify-between items-center mb-4">
@@ -59,7 +78,6 @@ const BookTable = ({ books }) => {
                             className="bg-green-500 flex gap-2 items-center justify-center text-white px-4 py-2 rounded-lg"
                             onClick={() => setIsExportDropdownOpen(!isExportDropdownOpen)}
                         >
-                            <CiExport />
                             Export
                         </button>
                         {isExportDropdownOpen && (
@@ -75,6 +93,7 @@ const BookTable = ({ books }) => {
                     <thead className="p-2">
                         <tr className="bg-accentborders text-left">
                             <th className="py-2 px-4 border-b">Entry ID</th>
+                            <th className="py-2 px-4 border-b">ISBN</th>
                             <th className="py-2 px-4 border-b">Title</th>
                             <th className="py-2 px-4 border-b">Author</th>
                             <th className="py-2 px-4 border-b">Genre</th>
@@ -86,8 +105,9 @@ const BookTable = ({ books }) => {
                     <tbody>
                         {filteredBooks?.length > 0 ? (
                             filteredBooks.map((book) => (
-                                <tr key={book.entry_id} className="hover:bg-accent p-3 rounded-xl">
+                                <tr key={book.entry_id} className="hover:bg-accent hover:text-white p-3 rounded-xl">
                                     <td className="py-2 px-4 border-b">{book.entry_id}</td>
+                                    <td className="py-2 px-4 border-b">{book.isbn}</td>                                    
                                     <td className="py-2 px-4 border-b">{book.title}</td>
                                     <td className="py-2 px-4 border-b">{book.author}</td>
                                     <td className="py-2 px-4 border-b">{book.genre}</td>
@@ -95,11 +115,11 @@ const BookTable = ({ books }) => {
                                     <td className="py-2 px-4 border-b text-center">{book.stock}</td>
                                     <td className="py-2 px-4 border-b text-center">
                                         <div className="flex items-center justify-center gap-4">
-                                            <button className="">
+                                            <button onClick={() => openEditModal(book)}>
                                                 <FiEdit2 />
                                             </button>
-                                            <button className="">
-                                                <FiMoreHorizontal />
+                                            <button onClick={() => openDeletePopup(book)}>
+                                                <MdOutlineDeleteOutline className="hover:text-red-400" />
                                             </button>
                                         </div>
                                     </td>
@@ -115,6 +135,21 @@ const BookTable = ({ books }) => {
                     </tbody>
                 </table>
             </div>
+
+            {/* Edit Modal */}
+            <EditModal
+                book={selectedBook}
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                onSave={(updatedBook) => console.log("Book updated:", updatedBook)} // Replace with actual update logic
+            />
+
+            {/* Delete Confirmation */}
+            <DeleteConfirmation
+                isOpen={isDeletePopupOpen}
+                onClose={() => setIsDeletePopupOpen(false)}
+                onDelete={handleDelete}
+            />
         </div>
     );
 };
