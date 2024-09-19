@@ -3,8 +3,8 @@ import { FiEdit2 } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import Export from "./export";
 import { downLoadFile } from "@/lib/utils";
-import EditModal from "./EditModal";
-import DeleteConfirmation from "./DeleteConfirmation";
+import EditModal from "./editModal";
+import DeleteConfirmation from "./deleteConfirmation";
 
 const BookTable = ({ books, setBooks }) => {
     const [searchTerm, setSearchTerm] = useState("");
