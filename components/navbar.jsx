@@ -6,23 +6,30 @@ import { useState } from "react";
 import { BsFilterLeft } from "react-icons/bs";
 import { CiFilter } from "react-icons/ci";
 import FilterModal from "./filter";
+import AddBookModal from "./AddBookModal"; // Import the new AddBookModal component
 
 const Navbar = () => {
     const [searchInput, setSearchInput] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false); // State to manage AddBookModal
     const [selectedGenre, setSelectedGenre] = useState([]);
     const [authorFilter, setAuthorFilter] = useState([]);
     const [authorName, setAuthorName] = useState("");
+
     const onChangeSearchInput = (e) => {
         setSearchInput(e.target.value);
     };
 
     const removeItemFromGenre = (genreToRemove) => {
-        setSelectedGenre( selectedGenre.filter( genre => genre !== genreToRemove ) );
+        setSelectedGenre(selectedGenre.filter(genre => genre !== genreToRemove));
     };
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
+    };
+
+    const toggleAddBookModal = () => {
+        setIsAddBookModalOpen(!isAddBookModalOpen); // Toggle AddBookModal visibility
     };
 
     const handleGenreChange = (e) => {
@@ -40,7 +47,7 @@ const Navbar = () => {
     };
 
     const removeAuthor = (authorToRemove) => {
-        setAuthorFilter( authorFilter.filter((author) => author !== authorToRemove ) );
+        setAuthorFilter(authorFilter.filter((author) => author !== authorToRemove));
     };
     const handleAuthor = (e) => {
         setAuthorName(e.target.value);
@@ -50,6 +57,11 @@ const Navbar = () => {
         console.log('Selected Genre:', selectedGenre);
         console.log('Author Filter:', authorFilter);
         toggleModal();
+    };
+
+    const handleAddBookSubmit = (newBook) => {
+        console.log('New Book:', newBook);
+        // Handle the new book data (e.g., send it to a server or update a state)
     };
 
     return (
@@ -74,7 +86,7 @@ const Navbar = () => {
                         <CiFilter size={25} />
                     </button>
                 </div>
-                <button className="h-1/2 flex rounded-lg p-2 items-center justify-center gap-2 bg-accent text-white">
+                <button onClick={toggleAddBookModal} className="h-1/2 flex rounded-lg p-2 items-center justify-center gap-2 bg-accent text-white">
                     <CiSquarePlus size={25} />
                     <p className="hidden sm:inline">Add new book</p>
                 </button>
@@ -90,12 +102,19 @@ const Navbar = () => {
                 authorFilter={authorFilter}
                 handleAuthorChange={handleAuthorChange}
                 removeGenre={removeItemFromGenre}
-                handleAuthor ={handleAuthor}
-                authorName = {authorName}
-                removeAuthor = {removeAuthor}
+                handleAuthor={handleAuthor}
+                authorName={authorName}
+                removeAuthor={removeAuthor}
+            />
+
+            {/* Render AddBookModal component */}
+            <AddBookModal
+                isOpen={isAddBookModalOpen}
+                onClose={toggleAddBookModal}
+                onSubmit={handleAddBookSubmit}
             />
         </div>
     );
-}
+};
 
 export default Navbar;
