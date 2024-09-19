@@ -137,12 +137,12 @@ const BookTable = ({ books, setBooks }) => {
             </div>
 
             {/* Edit Modal */}
-            <EditModal
+            { selectedBook && <EditModal
                 book={selectedBook}
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
                 onSave={(updatedBook) => console.log("Book updated:", updatedBook)} // Replace with actual update logic
-            />
+            />}
 
             {/* Delete Confirmation */}
             <DeleteConfirmation

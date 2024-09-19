@@ -1,5 +1,4 @@
 "use client"
-import { sql } from "@vercel/postgres";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/navbar";
 import axios from "axios";
@@ -26,6 +25,7 @@ function MainPage() {
   }, []);
 
   return (
+    data &&
     <div className=" ">
       <Navbar />
       <BookTable books={data} setBooks={setData} />

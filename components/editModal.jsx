@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
 const EditModal = ({ book, isOpen, onClose, onSave }) => {
-    if (!book){
-        return
-    }
     const [title, setTitle] = useState(book.title);
     const [author, setAuthor] = useState(book.author);
     const [genre, setGenre] = useState(book.genre);
@@ -34,59 +31,56 @@ const EditModal = ({ book, isOpen, onClose, onSave }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
-                <h2 className="text-2xl font-bold mb-4">Edit Book</h2>
+                <h2 className="text-2xl text-black font-bold mb-4">Edit Book</h2>
                 <div className="flex flex-wrap -mx-3">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block mb-2 text-sm font-medium">Title</label>
+                        <label className="block mb-2 text-sm text-black font-medium">Title</label>
                         <input
                             type="text"
                             value={title}
                             onChange={handleTitleChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-full focus:outline-accent border-2 p-2 border-accentborders text-black rounded-lg"
                         />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block mb-2 text-sm font-medium">Author</label>
+                        <label className="block text-black mb-2 text-sm font-medium">Author</label>
                         <input
                             type="text"
                             value={author}
                             onChange={handleAuthorChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
-                        />
+                            className="w-full focus:outline-accent border-2 p-2 border-accentborders text-black rounded-lg" />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block mb-2 text-sm font-medium">Genre</label>
+                        <label className="block text-black mb-2 text-sm font-medium">Genre</label>
                         <input
                             type="text"
                             value={genre}
                             onChange={handleGenreChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
-                        />
+                            className="w-full focus:outline-accent border-2 p-2 border-accentborders text-black rounded-lg" />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block mb-2 text-sm font-medium">ISBN</label>
+                        <label className="block text-black mb-2 text-sm font-medium">ISBN</label>
                         <input
                             type="text"
                             value={isbn}
                             onChange={handleIsbnChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
-                        />
+                            className="w-full focus:outline-accent border-2 p-2 border-accentborders text-black rounded-lg" />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block mb-2 text-sm font-medium">Stock</label>
+                        <label className="block text-black mb-2 text-sm font-medium">Stock</label>
                         <input
                             type="number"
                             value={stock}
                             onChange={handleStockChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
-                        />
+                            min={0}
+                            className="w-full focus:outline-accent border-2 p-2 border-accentborders text-black rounded-lg" />
                     </div>
                 </div>
                 <div className="flex justify-end gap-4 mt-6">
-                    <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded-lg">
+                    <button onClick={onClose} className="px-4 py-2 bg-accentborders rounded-lg">
                         Cancel
                     </button>
-                    <button onClick={handleSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                    <button onClick={handleSave} className="px-4 py-2 bg-accent text-white rounded-lg">
                         Save
                     </button>
                 </div>
