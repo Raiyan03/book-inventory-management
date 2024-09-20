@@ -5,32 +5,69 @@ import Image from "next/image";
 import axios from "axios";
 import BookTable from "@/components/bookTable";
 import Loader from "@/components/loader";
+import { deleteBookCall, getBooksCall, getFilteredBooksCall } from "@/server/calls";
+import { getFilteredBooks } from "@/server/helper";
 function MainPage() {
   // Fetch data from the database
   // const { rows } = await sql`SELECT * FROM INVENTORY`;
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [search, setSearchInput] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState([]);
+  const [authorFilter, setAuthorFilter] = useState([]);
+  const [authorName, setAuthorName] = useState("");
   // Client-side request using useEffect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const values = { name: "ryan" };
-        const response = await axios.post("/api/get-books", values);
+        const response = await getBooksCall();
         setData(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
+    if (search.length < 3) {
+      fetchData();
+    }
+  }, [search]);
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    console.log("Author filter:", search);
+    const fetchFilteredData = async () => {
+      try{
+        setLoading(true);
+        const searchParams = {
+          searchElement: search,
+          genre: [],
+          authors: []
+        }
+        const response = await getFilteredBooksCall(searchParams);
+        console.log("Books fetched successfully:", response.data.data);
+        setData(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    }
+    if (search.length >= 3) {
+      fetchFilteredData();
+    }
+  }, [search]);
 
   return (
     <div className=" ">
-      <Navbar setBooks={setData} />
+      <Navbar 
+      setBooks={setData} 
+      setSearchInput={setSearchInput} 
+      setAuthorFilter={setAuthorFilter}
+      setAuthorName={setAuthorName}
+      setSelectedGenre={setSelectedGenre}
+      selectedGenre={selectedGenre}
+      searchInput={search}
+      authorFilter={authorFilter}
+      authorName={authorName}/>
       {
         loading ? (
           <div className="flex items-center justify-center h-96">

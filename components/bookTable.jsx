@@ -13,7 +13,7 @@ const BookTable = ({ books, setBooks }) => {
     const [selectedBook, setSelectedBook] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-    const exportDropdownRef = useRef(null); // Reference for the dropdown
+    const exportDropdownRef = useRef(null);
     
     const handleSearch = (e) => {
         setSearchTerm(e.target.value.toLowerCase());
@@ -23,8 +23,6 @@ const BookTable = ({ books, setBooks }) => {
         downLoadFile(type, books);
         setIsExportDropdownOpen(false); // Close dropdown after export
     };
-
-
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -44,7 +42,7 @@ const BookTable = ({ books, setBooks }) => {
         };
     }, [isExportDropdownOpen]);
 
-    let filteredBooks = books?.filter((book) =>
+    const filteredBooks = books?.filter((book) =>
         book.title.toLowerCase().includes(searchTerm) ||
         book.author.toLowerCase().includes(searchTerm) ||
         book.genre.toLowerCase().includes(searchTerm)
