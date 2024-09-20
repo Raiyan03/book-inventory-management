@@ -82,16 +82,12 @@ const Navbar = ({ setBooks }) => {
 
     return (
         <div className="flex border-b border-accentborders gap-5 p-2 justify-between">
-            <div className="hidden sm:flex gap-2">
+            <div className="flex gap-2">
                 <Image src={'/logo.jpg'} width={50} height={50} className="rounded-full" alt="logo" />
-                <div className="flex flex-col">
+                <div className="hidden sm:flex flex-col">
                     <h1 className="font-bold">Book</h1>
-                    <h1 className="text-gray-500 font-medium">Station</h1>
+                    <h1 className=" text-gray-500 font-medium">Station</h1>
                 </div>
-            </div>
-
-            <div className="md:hidden">
-                <BsFilterLeft size={40} />
             </div>
 
             <div className="flex gap-5 h-full">
