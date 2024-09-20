@@ -13,7 +13,7 @@ const BookTable = ({ books, setBooks }) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
     const exportDropdownRef = useRef(null); // Reference for the dropdown
-
+    
     const handleSearch = (e) => {
         setSearchTerm(e.target.value.toLowerCase());
     };
@@ -43,19 +43,19 @@ const BookTable = ({ books, setBooks }) => {
         };
     }, [isExportDropdownOpen]);
 
-    const filteredBooks = books?.filter((book) =>
+    let filteredBooks = books?.filter((book) =>
         book.title.toLowerCase().includes(searchTerm) ||
         book.author.toLowerCase().includes(searchTerm) ||
         book.genre.toLowerCase().includes(searchTerm)
     );
 
     const openEditModal = (book) => {
-        setSelectedBook(book);
+        setSelectedBook((prevBook) => book);
         setIsEditModalOpen(true);
     };
 
     const onSave = (updatedBook) => {
-        console.log("Book updated:", updatedBook); // Replace this with actual update
+        console.log("in onsave", updatedBook);
         setBooks((prevBooks) => prevBooks.map((book) => (book.entry_id === updatedBook.entry_id ? updatedBook : book)));
     }
 
@@ -67,7 +67,6 @@ const BookTable = ({ books, setBooks }) => {
     const handleDelete = () => {
         console.log("Deleting book:", selectedBook); // Replace this with actual delete logic
         setBooks((prevBooks) => prevBooks.filter((book) => book.entry_id !== selectedBook.entry_id));
-        filteredBooks.filter((book) => book.entry_id !== selectedBook.entry_id);
         setIsDeletePopupOpen(false);
     };
 

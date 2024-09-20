@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { validateBook } from "@/lib/validations";
+import React, { useState, useEffect } from "react";
+import ErrorMessage from "./errorMessage";
 
 const EditModal = ({ book, isOpen, onClose, onSave }) => {
     const formatDate = (date) => {
@@ -15,6 +17,19 @@ const EditModal = ({ book, isOpen, onClose, onSave }) => {
     const [isbn, setIsbn] = useState(book.isbn);
     const [stock, setStock] = useState(book.stock);
     const [publicationDate, setPublicationDate] = useState(formatDate(book.publication_date));
+    const [error, setError] = useState('');
+
+    // Update modal fields when the book changes
+    useEffect(() => {
+        if (book) {
+            setTitle(book.title);
+            setAuthor(book.author);
+            setGenre(book.genre);
+            setIsbn(book.isbn);
+            setStock(book.stock);
+            setPublicationDate(formatDate(book.publication_date));
+        }
+    }, [book]);
 
     const handleTitleChange = (e) => setTitle(e.target.value);
     const handleAuthorChange = (e) => setAuthor(e.target.value);
@@ -35,8 +50,18 @@ const EditModal = ({ book, isOpen, onClose, onSave }) => {
             stock,
             publication_date: publicationDate,
         };
-        onSave(updatedBook); // Call the save function and pass updated book
-        onClose(); // Close the modal
+        const valid = validateBook(updatedBook);
+        if (valid.error) {
+            setError(valid.error);
+            return;
+        }
+        onSave(updatedBook);
+        closeModal();
+    };
+
+    const closeModal = () => {
+        setError('');
+        onClose();
     };
 
     return (
@@ -116,8 +141,9 @@ const EditModal = ({ book, isOpen, onClose, onSave }) => {
                         </div>
                     </div>
                 </div>
+                <ErrorMessage message={error} />
                 <div className="flex justify-end gap-4 mt-6">
-                    <button onClick={onClose} className="px-4 py-2 bg-accentborders rounded-lg">
+                    <button onClick={closeModal} className="px-4 py-2 bg-accentborders rounded-lg">
                         Cancel
                     </button>
                     <button onClick={handleSave} className="px-4 py-2 bg-accent text-white rounded-lg">
