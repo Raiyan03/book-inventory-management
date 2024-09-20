@@ -52,13 +52,14 @@ const Navbar = ({
         setSelectedGenre([...selectedGenre, e.target.value]);
     };
 
+
+
     const handleAuthorChange = (e) => {
         const author = [...authorFilter, e.target.value];
         if (authorFilter.includes(e.target.value)) {
             return;
         };
         setAuthorFilter(author);
-        setBooks( (prevBooks) => prevBooks.filter((book) => author == book.author));
     };
 
     const removeAuthor = (authorToRemove) => {

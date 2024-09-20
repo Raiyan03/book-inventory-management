@@ -44,7 +44,6 @@ function MainPage() {
           authors: []
         }
         const response = await getFilteredBooksCall(searchParams);
-        console.log("Books fetched successfully:", response.data.data);
         setData(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -55,6 +54,41 @@ function MainPage() {
       fetchFilteredData();
     }
   }, [search]);
+
+  useEffect(() => {
+    const filterData = () => {
+      if (!data) return;
+
+      let filteredData = data;
+
+      if (selectedGenre.length > 0) {
+        filteredData = filteredData.filter(book => selectedGenre.includes(book.genre));
+      }
+
+      if (authorFilter.length > 0) {
+        filteredData = filteredData.filter(book => authorFilter.includes(book.author));
+      }
+
+      setData(filteredData);
+    };
+
+    filterData();
+  }, [selectedGenre, authorFilter]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getBooksCall();
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (selectedGenre.length === 0 && authorFilter.length === 0) {
+      fetchData();
+    }
+  }, [selectedGenre, authorFilter]);
 
   return (
     <div className=" ">
