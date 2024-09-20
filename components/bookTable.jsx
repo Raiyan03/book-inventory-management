@@ -5,6 +5,7 @@ import Export from "./export";
 import { downLoadFile } from "@/lib/utils";
 import EditModal from "./editModal";
 import DeleteConfirmation from "./deleteConfirmation";
+import { deleteBookCall, editBookCall } from "@/server/calls";
 
 const BookTable = ({ books, setBooks }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -55,7 +56,11 @@ const BookTable = ({ books, setBooks }) => {
     };
 
     const onSave = (updatedBook) => {
-        console.log("in onsave", updatedBook);
+        const response = editBookCall(updatedBook).then((res) => {
+            setIsEditModalOpen(false);
+        }).catch((err) => {
+            
+        });
         setBooks((prevBooks) => prevBooks.map((book) => (book.entry_id === updatedBook.entry_id ? updatedBook : book)));
     }
 
@@ -66,6 +71,13 @@ const BookTable = ({ books, setBooks }) => {
 
     const handleDelete = () => {
         console.log("Deleting book:", selectedBook); // Replace this with actual delete logic
+        const response = deleteBookCall(selectedBook?.entry_id)
+        .then((res) => {
+
+        })
+        .catch((err) => {
+            
+        });
         setBooks((prevBooks) => prevBooks.filter((book) => book.entry_id !== selectedBook.entry_id));
         setIsDeletePopupOpen(false);
     };
