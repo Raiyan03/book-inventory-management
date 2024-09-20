@@ -5,6 +5,7 @@ import Export from "./export";
 import { downLoadFile } from "@/lib/utils";
 import EditModal from "./editModal";
 import DeleteConfirmation from "./deleteConfirmation";
+import { deleteBookCall, editBookCall } from "@/server/calls";
 
 const BookTable = ({ books, setBooks }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -12,7 +13,7 @@ const BookTable = ({ books, setBooks }) => {
     const [selectedBook, setSelectedBook] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-    const exportDropdownRef = useRef(null); // Reference for the dropdown
+    const exportDropdownRef = useRef(null);
     
     const handleSearch = (e) => {
         setSearchTerm(e.target.value.toLowerCase());
@@ -22,8 +23,6 @@ const BookTable = ({ books, setBooks }) => {
         downLoadFile(type, books);
         setIsExportDropdownOpen(false); // Close dropdown after export
     };
-
-
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -43,7 +42,7 @@ const BookTable = ({ books, setBooks }) => {
         };
     }, [isExportDropdownOpen]);
 
-    let filteredBooks = books?.filter((book) =>
+    const filteredBooks = books?.filter((book) =>
         book.title.toLowerCase().includes(searchTerm) ||
         book.author.toLowerCase().includes(searchTerm) ||
         book.genre.toLowerCase().includes(searchTerm)
@@ -55,7 +54,11 @@ const BookTable = ({ books, setBooks }) => {
     };
 
     const onSave = (updatedBook) => {
-        console.log("in onsave", updatedBook);
+        const response = editBookCall(updatedBook).then((res) => {
+            setIsEditModalOpen(false);
+        }).catch((err) => {
+            
+        });
         setBooks((prevBooks) => prevBooks.map((book) => (book.entry_id === updatedBook.entry_id ? updatedBook : book)));
     }
 
@@ -66,6 +69,13 @@ const BookTable = ({ books, setBooks }) => {
 
     const handleDelete = () => {
         console.log("Deleting book:", selectedBook); // Replace this with actual delete logic
+        const response = deleteBookCall(selectedBook?.entry_id)
+        .then((res) => {
+
+        })
+        .catch((err) => {
+            
+        });
         setBooks((prevBooks) => prevBooks.filter((book) => book.entry_id !== selectedBook.entry_id));
         setIsDeletePopupOpen(false);
     };

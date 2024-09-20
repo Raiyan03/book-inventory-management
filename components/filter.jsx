@@ -1,8 +1,8 @@
 import { AiOutlineClose } from "react-icons/ai";
 import FilterCards from "./filterCards";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterAuthor from "./filterAuthor"
-const authorsList = ["J.K. Rowling", "J.R.R. Tolkien", "George R.R. Martin", "Agatha Christie", "Isaac Asimov", "Stephen King"]; // Example authors list
+import { getAuthorsCall, getBooksGenreCall } from "@/server/calls";
 
 /**
  * @component FilterModal
@@ -33,7 +33,24 @@ const FilterModal = ({
     removeAuthor
 }) => {
     const [filteredAuthors, setFilteredAuthors] = useState([]);
-
+    const [authorsList, setAuthorsList] = useState([]); // State to hold the list of authors
+    const [genresList, setGenresList] = useState([]); // State to hold the list of genres
+    useEffect(() => { 
+        const fetchData = async () => {
+            try {
+                const response = await getAuthorsCall();
+                const rows = response.data.data.map((author) => author.author);
+                const genres = await getBooksGenreCall();
+                const genreList = genres.data.data.map((genre) => genre.genre);
+                setGenresList(genreList);
+                setAuthorsList(rows);
+            } catch (error) {
+                console.error("Error fetching authors:", error);
+            };
+        };
+        fetchData();
+    }, []);
+    
     const handleAuthorInputChange = (e) => {
         const input = e.target.value;
         handleAuthor(e); // Update the parent state with the input value
@@ -72,10 +89,9 @@ const FilterModal = ({
                         className="w-full p-2 border-2 text-black focus:outline-accent border-gray-300 rounded-lg"
                     >
                         <option value="">All Genres</option>
-                        <option value="fiction">Fiction</option>
-                        <option value="non-fiction">Non-Fiction</option>
-                        <option value="fantasy">Fantasy</option>
-                        <option value="mystery">Mystery</option>
+                        {genresList.map((genre, index) => (
+                            <option key={index} value={genre}>{genre}</option>
+                        ))}
                     </select>
                     <div className=" flex flex-wrap gap-1 py-1">
                         {selectedGenre.map((genre, index) => (

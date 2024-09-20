@@ -8,19 +8,22 @@ import { CiFilter } from "react-icons/ci";
 import FilterModal from "./filter";
 import AddBookModal from "./addBookModal"; // Import the new AddBookModal component
 
-const Navbar = ({ setBooks }) => {
-    const [searchInput, setSearchInput] = useState('');
+const Navbar = ({ 
+    setBooks, 
+    searchInput,
+    setSearchInput, 
+    selectedGenre, 
+    setSelectedGenre, 
+    authorFilter, 
+    setAuthorFilter,
+    authorName,
+    setAuthorName}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false); // State to manage AddBookModal
-    const [selectedGenre, setSelectedGenre] = useState([]);
-    const [authorFilter, setAuthorFilter] = useState([]);
-    const [authorName, setAuthorName] = useState("");
 
     const onChangeSearchInput = (e) => {
         setSearchInput(e.target.value);
-        if (searchInput.length > 3) {
-            // Add your search logic here
-        }
+        console.log(searchInput);
     };
 
     const removeItemFromGenre = (genreToRemove) => {
@@ -49,13 +52,14 @@ const Navbar = ({ setBooks }) => {
         setSelectedGenre([...selectedGenre, e.target.value]);
     };
 
+
+
     const handleAuthorChange = (e) => {
         const author = [...authorFilter, e.target.value];
         if (authorFilter.includes(e.target.value)) {
             return;
         };
         setAuthorFilter(author);
-        setBooks( (prevBooks) => prevBooks.filter((book) => author == book.author));
     };
 
     const removeAuthor = (authorToRemove) => {

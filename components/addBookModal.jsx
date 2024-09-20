@@ -3,6 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import { validateBook } from "@/lib/validations";
 import ErrorMessage from "@/components/errorMessage";
+import { addNewBookCall } from "@/server/calls";
 const AddBookModal = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -27,7 +28,12 @@ const AddBookModal = ({ isOpen, onClose }) => {
             setError(valid.error);
             return;
         }
-        closeModal();
+        const response = addNewBookCall(newBook)
+        .then((res)=>{
+            closeModal();
+        }).catch((err) => {
+            setError("Something went wrong. Please try again.");
+        });
     };
 
     const closeModal = () => {
