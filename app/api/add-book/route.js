@@ -1,2 +1,2 @@
 import { addNewBook } from "@/server/helper"
-export const { POST } = addNewBook;
+export const POST  = addNewBook;

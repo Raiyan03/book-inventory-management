@@ -1,5 +1,11 @@
 import axios from "axios"
 
-const addNewBookCall = (boor) => {
-    axios.post("api/add-book", book)
+export const addNewBookCall = async (book) => {
+    console.log(book);
+    try {
+        const res = await axios.post('/api/add-book/', book);
+        return res;
+    } catch (error) {
+        console.error("Error adding new book:", error);
+    }
 }
