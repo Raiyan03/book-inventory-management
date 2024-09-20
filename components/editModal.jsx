@@ -1,59 +1,73 @@
-"use client"
-import { AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
 import { validateBook } from "@/lib/validations";
-import ErrorMessage from "@/components/errorMessage";
-const AddBookModal = ({ isOpen, onClose }) => {
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [genre, setGenre] = useState('');
-    const [publicationDate, setPublicationDate] = useState('');
-    const [isbn, setIsbn] = useState('');
-    const [stock, setStock] = useState('');
+import React, { useState, useEffect } from "react";
+import ErrorMessage from "./errorMessage";
+
+const EditModal = ({ book, isOpen, onClose, onSave }) => {
+    const formatDate = (date) => {
+        const d = new Date(date);
+        const month = `0${d.getMonth() + 1}`.slice(-2);
+        const day = `0${d.getDate()}`.slice(-2);
+        const year = d.getFullYear();
+        return `${year}-${month}-${day}`;
+    };
+
+    const [title, setTitle] = useState(book.title);
+    const [author, setAuthor] = useState(book.author);
+    const [genre, setGenre] = useState(book.genre);
+    const [isbn, setIsbn] = useState(book.isbn);
+    const [stock, setStock] = useState(book.stock);
+    const [publicationDate, setPublicationDate] = useState(formatDate(book.publication_date));
     const [error, setError] = useState('');
 
-    const handleSubmit = () => {
-        setError('');
-        const newBook = {
+    // Update modal fields when the book changes
+    useEffect(() => {
+        if (book) {
+            setTitle(book.title);
+            setAuthor(book.author);
+            setGenre(book.genre);
+            setIsbn(book.isbn);
+            setStock(book.stock);
+            setPublicationDate(formatDate(book.publication_date));
+        }
+    }, [book]);
+
+    const handleTitleChange = (e) => setTitle(e.target.value);
+    const handleAuthorChange = (e) => setAuthor(e.target.value);
+    const handleGenreChange = (e) => setGenre(e.target.value);
+    const handleIsbnChange = (e) => setIsbn(e.target.value);
+    const handleStockChange = (e) => setStock(e.target.value);
+    const handlePublicationDateChange = (e) => setPublicationDate(e.target.value);
+
+    if (!isOpen) return null; // If modal is not open, don't render anything
+
+    const handleSave = () => {
+        const updatedBook = {
+            ...book,
             title,
             author,
             genre,
-            publication_date: publicationDate,
             isbn,
-            stock
+            stock,
+            publication_date: publicationDate,
         };
-        const valid = validateBook(newBook);
+        const valid = validateBook(updatedBook);
         if (valid.error) {
             setError(valid.error);
             return;
         }
+        onSave(updatedBook);
         closeModal();
     };
 
     const closeModal = () => {
         setError('');
-        setTitle('');
-        setAuthor('');
-        setGenre('');
-        setPublicationDate('');
-        setIsbn('');
-        setStock('');
         onClose();
     };
 
-    if (!isOpen) return null; // Do not render if modal is not open
-
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-2">
-            <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-xl h-auto">
-                <div className="flex justify-between items-center mb-2">
-                    <h2 className=" text-black text-lg font-bold">Add New Book</h2>
-                    <button onClick={closeModal}>
-                        <AiOutlineClose size={20} />
-                    </button>
-                </div>
-
-                {/* Form container */}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+                <h2 className="text-2xl text-black font-bold mb-4">Edit Book</h2>
                 <div className="space-y-2">
                     {/* First Row - Title and Author */}
                     <div className="flex gap-4">
@@ -62,7 +76,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                             <input
                                 type="text"
                                 value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                onChange={handleTitleChange}
                                 className="w-full p-2 text-black border-2 border-gray-300 rounded-lg focus:outline-accent"
                                 placeholder="Enter book title"
                             />
@@ -72,7 +86,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                             <input
                                 type="text"
                                 value={author}
-                                onChange={(e) => setAuthor(e.target.value)}
+                                onChange={handleAuthorChange}
                                 className="w-full p-2 text-black border-2 border-gray-300 rounded-lg focus:outline-accent"
                                 placeholder="Enter author name"
                             />
@@ -86,7 +100,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                             <input
                                 type="text"
                                 value={genre}
-                                onChange={(e) => setGenre(e.target.value)}
+                                onChange={handleGenreChange}
                                 className="w-full p-2 text-black border-2 border-gray-300 rounded-lg focus:outline-accent"
                                 placeholder="Enter genre"
                             />
@@ -96,7 +110,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                             <input
                                 type="date"
                                 value={publicationDate}
-                                onChange={(e) => setPublicationDate(e.target.value)}
+                                onChange={handlePublicationDateChange}
                                 className="w-full text-black p-2 border-2 border-gray-300 rounded-lg focus:outline-accent"
                             />
                         </div>
@@ -109,7 +123,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                             <input
                                 type="text"
                                 value={isbn}
-                                onChange={(e) => setIsbn(e.target.value)}
+                                onChange={handleIsbnChange}
                                 className="w-full text-black p-2 border-2 border-gray-300 rounded-lg focus:outline-accent"
                                 placeholder="Enter ISBN"
                             />
@@ -119,7 +133,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                             <input
                                 type="number"
                                 value={stock}
-                                onChange={(e) => setStock(e.target.value)}
+                                onChange={handleStockChange}
                                 className="w-full p-2 text-black border-2 border-gray-300 rounded-lg focus:outline-accent"
                                 placeholder="Enter stock quantity"
                                 min={0}
@@ -128,9 +142,12 @@ const AddBookModal = ({ isOpen, onClose }) => {
                     </div>
                 </div>
                 <ErrorMessage message={error} />
-                <div className="flex justify-end mt-4">
-                    <button onClick={handleSubmit} className="px-4 py-2 bg-accent text-white rounded-lg">
-                        Add Book
+                <div className="flex justify-end gap-4 mt-6">
+                    <button onClick={closeModal} className="px-4 py-2 bg-accentborders rounded-lg">
+                        Cancel
+                    </button>
+                    <button onClick={handleSave} className="px-4 py-2 bg-accent text-white rounded-lg">
+                        Save
                     </button>
                 </div>
             </div>
@@ -138,4 +155,4 @@ const AddBookModal = ({ isOpen, onClose }) => {
     );
 };
 
-export default AddBookModal;
+export default EditModal;

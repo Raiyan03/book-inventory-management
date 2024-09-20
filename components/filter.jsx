@@ -22,7 +22,7 @@ const authorsList = ["J.K. Rowling", "J.R.R. Tolkien", "George R.R. Martin", "Ag
 const FilterModal = ({
     isOpen,
     onClose,
-    onApplyFilters,
+    clearFilters,
     selectedGenre,
     handleGenreChange,
     authorName,
@@ -103,8 +103,7 @@ const FilterModal = ({
                     )}
                 </div>
                 <div className="mt-4 flex justify-end gap-2">
-                    <button onClick={onClose} className="px-4 py-2 bg-accentborders rounded-lg">Cancel</button>
-                    <button onClick={onApplyFilters} className="px-4 py-2 bg-accent text-white rounded-lg">Apply Filters</button>
+                    <button onClick={clearFilters} className="px-4 py-2 bg-accentborders rounded-lg">Clear filters</button>
                 </div>
             </div>
         </div>
