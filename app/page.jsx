@@ -1,7 +1,9 @@
 "use client"
 import { sql } from "@vercel/postgres";
 import { useEffect, useState } from "react";
+import Navbar from "@/components/navbar";
 import axios from "axios";
+import BookTable from "@/components/bookTable";
 function MainPage() {
   // Fetch data from the database
   // const { rows } = await sql`SELECT * FROM INVENTORY`;
@@ -24,16 +26,9 @@ function MainPage() {
   }, []);
 
   return (
-    <div className=" text-gray-300 bg-teal-600">
-      {/* {rows.map((row) => (
-        <div key={row.isbn}>
-          {row.isbn} - {row.title}
-        </div>
-      ))}
-
-      Render data from the API call */}
-      hello
-      {data && <div>Data from API: {JSON.stringify(data)}</div>}
+    <div className=" ">
+      <Navbar />
+      <BookTable books={data} />
     </div>
   );
 }
