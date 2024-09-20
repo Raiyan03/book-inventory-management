@@ -1,7 +1,8 @@
 "use client"
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
-
+import { validateBook } from "@/lib/validations";
+import ErrorMessage from "@/components/errorMessage";
 const AddBookModal = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -9,8 +10,10 @@ const AddBookModal = ({ isOpen, onClose }) => {
     const [publicationDate, setPublicationDate] = useState('');
     const [isbn, setIsbn] = useState('');
     const [stock, setStock] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = () => {
+        setError('');
         const newBook = {
             title,
             author,
@@ -19,7 +22,22 @@ const AddBookModal = ({ isOpen, onClose }) => {
             isbn,
             stock
         };
-        onSubmit(newBook);
+        const valid = validateBook(newBook);
+        if (valid.error) {
+            setError(valid.error);
+            return;
+        }
+        closeModal();
+    };
+
+    const closeModal = () => {
+        setError('');
+        setTitle('');
+        setAuthor('');
+        setGenre('');
+        setPublicationDate('');
+        setIsbn('');
+        setStock('');
         onClose();
     };
 
@@ -30,7 +48,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
             <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-xl h-auto">
                 <div className="flex justify-between items-center mb-2">
                     <h2 className=" text-black text-lg font-bold">Add New Book</h2>
-                    <button onClick={onClose}>
+                    <button onClick={closeModal}>
                         <AiOutlineClose size={20} />
                     </button>
                 </div>
@@ -109,8 +127,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
                         </div>
                     </div>
                 </div>
-
-                {/* Submit button */}
+                <ErrorMessage message={error} />
                 <div className="flex justify-end mt-4">
                     <button onClick={handleSubmit} className="px-4 py-2 bg-accent text-white rounded-lg">
                         Add Book
