@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar";
 import Image from "next/image";
 import axios from "axios";
 import BookTable from "@/components/bookTable";
+import Loader from "@/components/loader";
 function MainPage() {
   // Fetch data from the database
   // const { rows } = await sql`SELECT * FROM INVENTORY`;
@@ -33,7 +34,7 @@ function MainPage() {
       {
         loading ? (
           <div className="flex items-center justify-center h-96">
-            <p className="text-2xl text-gray-500">Loading...</p>
+            <Loader />
           </div>
         ) : (
           data ? 
