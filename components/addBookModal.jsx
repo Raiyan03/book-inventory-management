@@ -32,7 +32,7 @@ const AddBookModal = ({ isOpen, onClose }) => {
         .then((res)=>{
             closeModal();
         }).catch((err) => {
-            setError(err.message);
+            setError("Something went wrong. Please try again.");
         });
     };
 
